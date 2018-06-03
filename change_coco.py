@@ -91,5 +91,5 @@ class Datahandler_COCO():
         #self.coco.
         # register classes
 
-ft=Datahandler_COCO(sys.argv[0],sys.argv[1])
+ft=Datahandler_COCO(sys.argv[1],sys.argv[2])
 ft.make_batches()
