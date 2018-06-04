@@ -19,7 +19,7 @@ from coco_generator import Datahandler_COCO, Default_Generator
 from imgaug import augmenters as iaa
 import imgaug as ia
 
-sometimes = lambda aug: iaa.Sometimes(0.2, aug)
+sometimes = lambda aug: iaa.Sometimes(0.4, aug)
 
 import tensorflow as tf
 

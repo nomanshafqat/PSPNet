@@ -5,3 +5,15 @@ train_mask.py --trainimg_dir /Users/nomanshafqat/val/images/ --trainmsk_dir /Use
 server
 
 python train_mask.py --trainimg_dir /home2/noman/data/train/images/ --trainmsk_dir /home2/noman/data/train/annotation.json --valimg_dir /home2/noman/data/val/images/ --valmsk_dir=/home2/noman/data/val/annotation-small.json --steps=500 --val_steps 100 --batch_size 2
+/Users/nomanshafqat/Dropbox/datase/roofdataset/testboundaries
+
+
+
+python train_mask.py \
+--trainimg_dir /Users/nomanshafqat/Dropbox/datase/roofdataset/images/  \
+--trainmsk_dir /Users/nomanshafqat/Dropbox/datase/roofdataset/boundaries  \
+--valimg_dir /Users/nomanshafqat/Dropbox/datase/roofdataset/images/ \
+--valmsk_dir=/Users/nomanshafqat/Dropbox/datase/roofdataset/boundaries \
+--steps=2 \
+--val_steps 2 \
+--dataset dir
