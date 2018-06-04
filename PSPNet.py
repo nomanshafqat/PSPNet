@@ -8,7 +8,7 @@ from keras.layers import multiply, add, concatenate
 from keras.engine.topology import Layer
 from keras.engine import InputSpec
 from keras.utils import np_utils, conv_utils
-
+import keras
 from os.path import splitext, join, isfile
 from os import environ
 from math import ceil
@@ -265,6 +265,7 @@ def aspp_block(x, num_filters=256, rate_scale=1, output_stride=16, input_shape=(
 
     # channel merge
     y = merge([
+
         conv3_3_1,
         conv3_3_2,
         conv3_3_3,
@@ -504,7 +505,7 @@ def crop_deconv(
 
 def PSPNet50(
         input_shape=(512, 512, 3),
-        n_labels=20,
+        n_labels=2,
         output_stride=16,
         num_blocks=4,
         multigrid=[1, 1, 1],
@@ -514,7 +515,7 @@ def PSPNet50(
         upsample_type='deconv'):
 
     # Input shape
-    img_input = Input(shape=input_shape)
+    img_input = Input(shape=input_shape,name="input")
 
     # compute input shape
     if K.image_data_format() == 'channels_last':
@@ -586,10 +587,10 @@ def PSPNet50(
                 use_bias=False,
                 name='upscore_{}'.format('out'))(x)
 
-    out = Reshape((input_shape[0] * input_shape[1], n_labels), input_shape=(input_shape[0], input_shape[1], n_labels))(out)
+    out = Reshape((input_shape[0] , input_shape[1], n_labels), input_shape=(input_shape[0], input_shape[1], n_labels))(out)
     # default "softmax"
-    out = Activation(output_mode)(out)
-
+    out = Activation(output_mode,name="akhri")(out)
+    keras.backend.argmax(out,axis=-1)
     model = Model(inputs=img_input, outputs=out)
 
     return model

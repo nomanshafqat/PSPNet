@@ -9,7 +9,7 @@ def catelab(labels, dims, n_labels):
     for i in range(dims[0]):
         for j in range(dims[1]):
             x[i,j,labels[i][j]]=1
-    x = x.reshape(dims[0]*dims[1], n_labels)
+    x = x.reshape(dims[0],dims[1], n_labels)
     return x
 
 
