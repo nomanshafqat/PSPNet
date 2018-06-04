@@ -90,7 +90,7 @@ def main(args):
         cp_cb = ModelCheckpoint(filepath=fpath, monitor='val_loss', verbose=1, mode='auto',
                                 period=1)
         es_cb = EarlyStopping(monitor='val_loss', patience=2, verbose=1, mode='auto')
-        tb_cb = TensorBoard(log_dir=".././pretrained_mask", write_graph=True, write_images=True)
+        tb_cb = TensorBoard(log_dir="./pretrained_mask", write_graph=True, write_images=True)
 
         seq = iaa.Sequential([
             iaa.Crop(px=(0, 16)),  # crop images from each side by 0 to 16px (randomly chosen)
