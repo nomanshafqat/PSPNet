@@ -1,2 +1,7 @@
 train_mask.py --trainimg_dir /Users/nomanshafqat/val/images/ --trainmsk_dir /Users/nomanshafqat/val/annotation-small.json --valimg_dir /Users/nomanshafqat/val/images/ --valmsk_dir=/Users/nomanshafqat/val/annotation-small.json --steps=2 --val_steps 2 --load ./pretrained_mask/LIP_PSPNet50_mask05.hdf5
 
+
+
+server
+
+python train_mask.py --trainimg_dir /home2/noman/data/train/images/ --trainmsk_dir /home2/noman/data/train/annotation.json --valimg_dir /home2/noman/data/val/images/ --valmsk_dir=/home2/noman/data/val/annotation-small.json --steps=500 --val_steps 100 --batch_size 2

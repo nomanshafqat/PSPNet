@@ -24,47 +24,6 @@ sometimes = lambda aug: iaa.Sometimes(0.2, aug)
 import tensorflow as tf
 
 
-def make_image(tensor):
-    """
-    Convert an numpy representation image to Image protobuf.
-    Copied from https://github.com/lanpa/tensorboard-pytorch/
-    """
-    from PIL import Image
-    height, width, channel = tensor.shape
-    image = Image.fromarray(tensor)
-    import io
-    output = io.BytesIO()
-    image.save(output, format='PNG')
-    image_string = output.getvalue()
-    output.close()
-    return tf.Summary.Image(height=height,
-                            width=width,
-                            colorspace=channel,
-                            encoded_image_string=image_string)
-
-
-class TensorBoardImage(keras.callbacks.Callback):
-    def __init__(self, tag):
-        super().__init__()
-        self.tag = tag
-
-    def on_epoch_end(self, epoch, logs={}):
-        # Load image
-        img = data.astronaut()
-        # Do something to the image
-        img = (255 * skimage.util.random_noise(img)).astype('uint8')
-
-        image = make_image(img)
-        summary = tf.Summary(value=[tf.Summary.Value(tag=self.tag, image=image)])
-        writer = tf.summary.FileWriter('./logs')
-        writer.add_summary(summary, epoch)
-        writer.close()
-
-        return
-
-
-tbi_callback = TensorBoardImage('Image Example')
-
 
 def main(args):
     # set the necessary list
@@ -89,7 +48,6 @@ def main(args):
         fpath = './pretrained_mask/LIP_PSPNet50_mask{epoch:02d}.hdf5'
         cp_cb = ModelCheckpoint(filepath=fpath, monitor='val_loss', verbose=1, mode='auto',
                                 period=1)
-        es_cb = EarlyStopping(monitor='val_loss', patience=2, verbose=1, mode='auto')
         tb_cb = TensorBoard(log_dir="./pretrained_mask", write_graph=True, write_images=True)
 
         seq = iaa.Sequential([
@@ -140,7 +98,7 @@ def main(args):
                              epochs=args.epochs,
                              validation_data=val_gen,
                              validation_steps=args.val_steps,
-                             callbacks=[cp_cb, es_cb, tb_cb],
+                             callbacks=[cp_cb, tb_cb],
                              verbose=True)
 
     # save model
