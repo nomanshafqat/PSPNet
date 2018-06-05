@@ -38,7 +38,7 @@ for filename in files:
     inputs[:, :, 0] = inputs[:, :, 0] * (1 - outputs)
     inputs[:, :, 1] = inputs[:, :, 1] * (1 - outputs)
     print(outputs)
-    cv2.imwrite("results/" + filename+"re.jpg", np.array(outputs, "uint8") * 255)
+    #cv2.imwrite("results/" + filename+"re.jpg", np.array(outputs, "uint8") * 255)
     cv2.imwrite("results/" + filename+".jpg", np.array( inputs, "uint8"))
 
     # plt.show()
