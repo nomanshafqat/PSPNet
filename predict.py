@@ -33,7 +33,7 @@ for filename in files:
 
     print(outputs)
     cv2.imwrite("results/" + filename+"re.jpg", np.array(outputs, "uint8") * 255)
-    cv2.imwrite("results/" + filename+".jpg", np.array(inputs, "uint8"))
+    cv2.imwrite("results/" + filename+".jpg", np.array( cv2.resize(inputs, (512, 512)), "uint8"))
 
     # plt.show()
 
