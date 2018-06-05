@@ -102,8 +102,8 @@ class Datahandler_COCO():
                 batch_images.append(img)
                 batch_masks.append(mask)
 
-                # cv2.imwrite(filename+"gt.jpg",img)
-                # cv2.imwrite(filename+"b.jpg",mask*255)
+                #cv2.imwrite("gt.jpg",img)
+                #cv2.imwrite("b.jpg",mask*255)
                 if len(batch_images) == batchsize:
                     yield (np.array(batch_images), np.array(batch_masks))
                     batch_images = []
@@ -181,8 +181,8 @@ class Default_Generator():
 
                 img = cv2.resize(img, inputshape[:-1])
                 mask = cv2.resize(mask, inputshape[:-1])
-                cv2.imwrite("gt.jpg", img)
-                cv2.imwrite("b.jpg", mask * 255)
+                #cv2.imwrite("gt.jpg", img)
+                #v2.imwrite("b.jpg", mask * 255)
 
                 mask = self.msklab(mask, 2)
 
