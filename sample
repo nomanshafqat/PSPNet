@@ -16,6 +16,7 @@ python train_mask.py --trainimg_dir /home2/noman/data/train/images/ --trainmsk_d
 /Users/nomanshafqat/Dropbox/datase/roofdataset/testboundaries
 
 
+python predict.py ./pretrained_mask/LIP_PSPNet50_mask28.hdf5 /home2/noman/rooftop/new/testimgs/
 
 python train_mask.py \
 --trainimg_dir /Users/nomanshafqat/Dropbox/datase/roofdataset/images/  \
