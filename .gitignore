@@ -5,3 +5,7 @@ pretrained_*
 .ipynb_checkpoints
 images
 *.json
+*.xml
+*.jpg
+*.iml
+.DS_Store
