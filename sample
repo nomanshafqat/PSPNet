@@ -22,7 +22,7 @@ python train_mask.py \
 --trainimg_dir /Users/nomanshafqat/Dropbox/datase/roofdataset/images/  \
 --trainmsk_dir /Users/nomanshafqat/Dropbox/datase/roofdataset/boundaries  \
 --valimg_dir /Users/nomanshafqat/Dropbox/datase/roofdataset/images/ \
---valmsk_dir=/Users/nomanshafqat/Dropbox/datase/roofdataset/boundaries \
+--valmsk_dir /Users/nomanshafqat/Dropbox/datase/roofdataset/boundaries \
 --steps=2 \
 --val_steps 2 \
 --dataset dir

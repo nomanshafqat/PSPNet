@@ -188,7 +188,7 @@ class Pascal_Generator():
         print("loading  PASCAL dataset")
         self.image_names = [l.strip().split(None, 1)[0] for l in open(
             os.path.join(self.data_dir, 'ImageSets', 'Main', self.annotation_file + '.txt')).readlines()]
-
+        print(self.image_names)
         # mask_list=[[cv2.imread(os.path.join(annotation_dir,name)]) for name in mask_list]
 
 
@@ -228,11 +228,10 @@ class Pascal_Generator():
 
                     aspect=((ymax-ymin)/(xmax-xmin))
                     mask[ymin:ymax,xmin:xmax]=1
-                img[:,:,1]=mask*255
+                #img[:,:,1]=mask*255
 
                 #cv2.imwrite("mask.jpg",mask*255)
 
-                #cv2.imwrite("img.jpg",img)
                 #print(aspect)
                 if  aspect < 9.0:
                     print("skip...",i)
@@ -251,6 +250,7 @@ class Pascal_Generator():
                 mask = self.msklab(mask, 2)
                 #cv2.imwrite("gt.jpg", img)
                 #cv2.imwrite("b.jpg", mask[:,:,1] * 255)
+                #cv2.imwrite("img.jpg",img)
 
                 batch_images.append(img)
                 batch_masks.append(mask)
