@@ -234,7 +234,7 @@ class Pascal_Generator():
 
                 #print(aspect)
                 if  aspect < 9.0:
-                    print("skip...",i)
+                    #print("skip...",i)
                     continue
                 if augmentation != None:
                     #print("sug")
