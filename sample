@@ -27,3 +27,6 @@ python train_mask.py \
 --val_steps 2 \
 --dataset dir
 
+
+
+python train_mask.py --trainimg_dir '/Users/nomanshafqat/Google Drive/upwork/wholedataset'  --trainmsk_dir '/Users/nomanshafqat/Google Drive/upwork/wholedataset/ImageSets/Main/trainval'  --valimg_dir '/Users/nomanshafqat/Google Drive/upwork/wholedataset' --valmsk_dir='/Users/nomanshafqat/Google Drive/upwork/wholedataset/ImageSets/Main/test'  --steps 20 --val_steps 2 --dataset pascal_khamba --batch_size 2

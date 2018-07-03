@@ -1,27 +1,21 @@
 # -*- coding: utf-8 -*-
-import keras.backend.tensorflow_backend as KTF
-import skimage
-import tensorflow as tf
-from keras.callbacks import EarlyStopping, TensorBoard, ModelCheckpoint
+import argparse
 
-from generator_mask import data_gen_small
+import keras.backend.tensorflow_backend as KTF
+import tensorflow as tf
+from keras.callbacks import TensorBoard, ModelCheckpoint
 
 import os
-import numpy as np
-import pandas as pd
-import argparse
 import json
-import keras
 from PSPNet import PSPNet50
 
 from coco_generator import Datahandler_COCO
-from coco_generator import Datahandler_COCO, Default_Generator
+from coco_generator import Datahandler_COCO, Default_Generator,Pascal_Generator
 from imgaug import augmenters as iaa
 import imgaug as ia
 
 sometimes = lambda aug: iaa.Sometimes(0.4, aug)
 
-import tensorflow as tf
 
 
 
@@ -68,6 +62,14 @@ def main(args):
             val_gen = Datahandler_COCO(valimg_dir, valmsk_dir).make_batches(batchsize=args.batch_size,
                                                                             inputshape=args.input_shape,
                                                                             augmentation=None)
+        elif args.dataset == 'pascal_khamba':
+            train_gen = Pascal_Generator(trainimg_dir, trainmsk_dir).make_batches(batchsize=args.batch_size,
+                                                                                  inputshape=args.input_shape,
+                                                                                  augmentation=seq)
+            val_gen = Pascal_Generator(valimg_dir, valmsk_dir).make_batches(batchsize=args.batch_size,
+                                                                            inputshape=args.input_shape,
+                                                                            augmentation=None)
+
         else:
             train_gen = Default_Generator(trainimg_dir, trainmsk_dir).make_batches(batchsize=args.batch_size,
                                                                                    inputshape=args.input_shape,
@@ -111,6 +113,7 @@ def main(args):
 if __name__ == "__main__":
     # command line argments
     parser = argparse.ArgumentParser(description="SegUNet LIP dataset")
+
     parser.add_argument("--dataset",
                         help="daase",
                         default='coco'

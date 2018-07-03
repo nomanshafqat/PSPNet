@@ -9,6 +9,7 @@ import cv2
 import os
 import xml.etree.cElementTree as ET
 from six import raise_from
+from random import shuffle
 
 
 class Datahandler_COCO():
@@ -96,14 +97,7 @@ class Datahandler_COCO():
                     batch_images = []
                     batch_masks = []
 
-    def get_batch(self, batch_size=1, train=True):
-        a = next(self.make_batches(batch_size, train))
-        for b in a:
-            print(b)
-            return np.array(b), np.expand_dims(np.array(b), axis=-1)
 
-            # self.coco.
-            # register classes
 
 
 class Default_Generator():
@@ -191,7 +185,7 @@ class Pascal_Generator():
         self.mask_list = []
         self.img_list = []
 
-        print("loading dataset")
+        print("loading  PASCAL dataset")
         self.image_names = [l.strip().split(None, 1)[0] for l in open(
             os.path.join(self.data_dir, 'ImageSets', 'Main', self.annotation_file + '.txt')).readlines()]
 
@@ -200,7 +194,7 @@ class Pascal_Generator():
 
     def msklab(self, labels, n_labels):
         dims = labels.shape
-        print(dims)
+        #print(dims)
         x = np.zeros([dims[0], dims[1], n_labels])
         for i in range(dims[0]):
             for j in range(dims[1]):
@@ -214,11 +208,12 @@ class Pascal_Generator():
         # print(self.image_ids)
 
         while True:
+            shuffle(self.image_names)
             for i,name in enumerate(self.image_names):
-                print(os.path.join(self.data_dir,"JPEGImages",name+".jpg"))
+                #print(os.path.join(self.data_dir,"JPEGImages",name+".jpg"))
                 img = cv2.imread(os.path.join(self.data_dir,"JPEGImages",name+".jpg"))
                 annotation=self.load_annotations(name+".xml")
-                print(annotation)
+                #print(annotation)
                 mask=np.zeros(img.shape[:-1],dtype=np.uint8)
 
                 for box in annotation:
@@ -235,14 +230,15 @@ class Pascal_Generator():
                     mask[ymin:ymax,xmin:xmax]=1
                 img[:,:,1]=mask*255
 
-                cv2.imwrite("mask.jpg",mask*255)
+                #cv2.imwrite("mask.jpg",mask*255)
 
-                cv2.imwrite("img.jpg",img)
-                print(aspect)
-                if  aspect < 9:
+                #cv2.imwrite("img.jpg",img)
+                #print(aspect)
+                if  aspect < 9.0:
                     print("skip...",i)
                     continue
                 if augmentation != None:
+                    #print("sug")
                     _aug = augmentation._to_deterministic()
 
                     img = _aug.augment_image(img)
@@ -254,7 +250,7 @@ class Pascal_Generator():
 
                 mask = self.msklab(mask, 2)
                 #cv2.imwrite("gt.jpg", img)
-                cv2.imwrite("b.jpg", mask[:,:,1] * 255)
+                #cv2.imwrite("b.jpg", mask[:,:,1] * 255)
 
                 batch_images.append(img)
                 batch_masks.append(mask)
@@ -316,7 +312,7 @@ def _findNode(parent, name, debug_name = None, parse = None):
     return result
 
 
-pg=Pascal_Generator("/Users/nomanshafqat/Google Drive/upwork/wholedataset","/Users/nomanshafqat/Google Drive/upwork/wholedataset/ImageSets/Main/trainval")
-a=pg.make_batches(100)
-next(a)
+#pg=Pascal_Generator("/Users/nomanshafqat/Google Drive/upwork/wholedataset","/Users/nomanshafqat/Google Drive/upwork/wholedataset/ImageSets/Main/trainval")
+#a=pg.make_batches(100)
+#next(a)
 
