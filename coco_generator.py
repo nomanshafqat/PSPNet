@@ -120,7 +120,7 @@ class Default_Generator():
             # print(annotation_dir, name)
             image[image < 50] = 0
             # image[image > 200] = 0
-            image[image > 50] = 1
+            image[image >= 50] = 1
 
             # cv2.imshow("sds",image*255)
             # cv2.waitKey(5000)
@@ -137,6 +137,7 @@ class Default_Generator():
         x = np.zeros([dims[0], dims[1], n_labels])
         for i in range(dims[0]):
             for j in range(dims[1]):
+                #print(labels[i][j])
                 x[i, j, labels[i][j]] = 1
         x = x.reshape(dims[0], dims[1], n_labels)
         return x
@@ -152,16 +153,21 @@ class Default_Generator():
                 img = self.img_list[i]
                 mask = self.mask_list[i]
 
-                img = cv2.resize(img, (700, 700))
-                mask = cv2.resize(mask, (700, 700))
+                img = cv2.resize(img, (700, 700),interpolation=cv2.INTER_AREA)
+                mask = cv2.resize(mask, (700, 700),interpolation=cv2.INTER_LINEAR_EXACT)
+
+                #cv2.imshow("mask",mask)
+                #cv2.waitKey(0)
+
+                #mask=(np.array(mask)/254).astype("int")
                 if augmentation != None:
                     _aug = augmentation._to_deterministic()
 
                     img = _aug.augment_image(img)
                     mask = _aug.augment_image(mask)
 
-                img = cv2.resize(img, inputshape[:-1])
-                mask = cv2.resize(mask, inputshape[:-1])
+                img = cv2.resize(img, inputshape[:-1],interpolation=cv2.INTER_AREA)
+                mask = cv2.resize(mask, inputshape[:-1],interpolation=cv2.INTER_LINEAR_EXACT)
                 # cv2.imwrite("gt.jpg", img)
                 # v2.imwrite("b.jpg", mask * 255)
 
@@ -202,13 +208,15 @@ class Pascal_Generator():
         x = x.reshape(dims[0], dims[1], n_labels)
         return x
 
-    def make_batches(self, batchsize=4, inputshape=(320, 320, 3), augmentation=None, Train=True):
+    def make_batches(self, batchsize=4, inputshape=(512, 512, 3), augmentation=None, Train=True):
         batch_images = []
         batch_masks = []
         # print(self.image_ids)
 
         while True:
             shuffle(self.image_names)
+            print(self.image_names)
+
             for i,name in enumerate(self.image_names):
                 #print(os.path.join(self.data_dir,"JPEGImages",name+".jpg"))
                 img = cv2.imread(os.path.join(self.data_dir,"JPEGImages",name+".jpg"))
@@ -232,9 +240,9 @@ class Pascal_Generator():
 
                 #cv2.imwrite("mask.jpg",mask*255)
 
-                #print(aspect)
-                if  aspect < 9.0:
-                    #print("skip...",i)
+                print(aspect)
+                if  aspect < 10.0:
+                    print("skip...",i)
                     continue
                 if augmentation != None:
                     #print("sug")
@@ -243,8 +251,8 @@ class Pascal_Generator():
                     img = _aug.augment_image(img)
                     mask = _aug.augment_image(mask)
 
-                img = cv2.resize(img, inputshape[:-1])
-                mask = cv2.resize(mask, inputshape[:-1])
+                img = cv2.resize(img, inputshape[:-1],interpolation=cv2.INTER_NEAREST)
+                mask = cv2.resize(mask, inputshape[:-1],interpolation=cv2.INTER_NEAREST)
 
 
                 mask = self.msklab(mask, 2)
@@ -316,3 +324,8 @@ def _findNode(parent, name, debug_name = None, parse = None):
 #a=pg.make_batches(100)
 #next(a)
 
+if __name__ == '__main__':
+
+    pg=Default_Generator("/Users/nomanshafqat/PycharmProjects/DownloadDataLabelBox/dataset/image","/Users/nomanshafqat/PycharmProjects/DownloadDataLabelBox/dataset/masks")
+    a=pg.make_batches(1)
+    print(next(a)[0].shape)

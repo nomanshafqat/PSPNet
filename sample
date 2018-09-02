@@ -30,3 +30,8 @@ python train_mask.py \
 
 
 python train_mask.py --trainimg_dir '/Users/nomanshafqat/Google Drive/upwork/wholedataset'  --trainmsk_dir '/Users/nomanshafqat/Google Drive/upwork/wholedataset/ImageSets/Main/trainval'  --valimg_dir '/Users/nomanshafqat/Google Drive/upwork/wholedataset' --valmsk_dir='/Users/nomanshafqat/Google Drive/upwork/wholedataset/ImageSets/Main/test'  --steps 20 --val_steps 2 --dataset pascal_khamba --batch_size 2
+
+
+python predict.py "/Users/nomanshafqat/Google Drive/upwork/backupPS/LIP_PSPNet50_mask19.hdf5" "/Users/nomanshafqat/Downloads/Test Images"
+
+python train_mask.py --trainimg_dir '/Users/nomanshafqat/PycharmProjects/DownloadDataLabelBox/dataset/image'  --trainmsk_dir '/Users/nomanshafqat/PycharmProjects/DownloadDataLabelBox/dataset/masks'  --valimg_dir '/Users/nomanshafqat/PycharmProjects/DownloadDataLabelBox/dataset/image' --valmsk_dir='/Users/nomanshafqat/PycharmProjects/DownloadDataLabelBox/dataset/masks'  --steps 20 --val_steps 2 --batch_size 2

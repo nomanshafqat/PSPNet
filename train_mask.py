@@ -9,7 +9,6 @@ import os
 import json
 from PSPNet import PSPNet50
 
-from coco_generator import Datahandler_COCO
 from coco_generator import Datahandler_COCO, Default_Generator,Pascal_Generator
 from imgaug import augmenters as iaa
 import imgaug as ia
@@ -39,7 +38,7 @@ def main(args):
         KTF.set_learning_phase(1)
 
         # set callbacks
-        fpath = './pretrained_mask/LIP_PSPNet50_mask{epoch:02d}.hdf5'
+        fpath = './pretrained_mask/BackgroundRemove{epoch:02d}.hdf5'
         cp_cb = ModelCheckpoint(filepath=fpath, monitor='val_loss', verbose=1, mode='auto',
                                 period=1)
         tb_cb = TensorBoard(log_dir="./pretrained_mask", write_graph=True, write_images=True)
@@ -47,8 +46,7 @@ def main(args):
         seq = iaa.Sequential([
             iaa.Crop(px=(0, 16)),  # crop images from each side by 0 to 16px (randomly chosen)
             iaa.Fliplr(0.5),  # horizontally flip 50% of the images
-            iaa.Flipud(0.2),  # vertically flip 20% of all images
-            sometimes(iaa.Affine(
+             sometimes(iaa.Affine(
                 scale={"x": (0.8, 1.2), "y": (0.8, 1.2)},
                 # scale images to 80-120% of their size, individually per axis
                 translate_percent={"x": (-0.2, 0.2), "y": (-0.2, 0.2)},  # translate by -20 to +20 percent (per axis)
@@ -104,7 +102,7 @@ def main(args):
                              verbose=True)
 
     # save model
-    with open("./pretrained_mask/LIP_SegUNet_mask.json", "w") as json_file:
+    with open("./pretrained_mask/BackgroundRemove.json", "w") as json_file:
         json_file.write(json.dumps(json.loads(pspnet.to_json()), indent=2))
 
     print("save json model done...")
@@ -116,7 +114,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--dataset",
                         help="daase",
-                        default='coco'
+                        default='dir'
                         )
     parser.add_argument("--load",
                         help="ckpt",
