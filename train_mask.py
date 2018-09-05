@@ -38,7 +38,7 @@ def main(args):
         KTF.set_learning_phase(1)
 
         # set callbacks
-        fpath = './pretrained_mask/BackgroundRemove{epoch:02d}.hdf5'
+        fpath = './pretrained_mask/'+args.name+'{epoch:02d}.hdf5'
         cp_cb = ModelCheckpoint(filepath=fpath, monitor='val_loss', verbose=1, mode='auto',
                                 period=1)
         tb_cb = TensorBoard(log_dir="./pretrained_mask", write_graph=True, write_images=True)
@@ -102,7 +102,7 @@ def main(args):
                              verbose=True)
 
     # save model
-    with open("./pretrained_mask/BackgroundRemove.json", "w") as json_file:
+    with open("./pretrained_mask/"+args.name+".json", "w") as json_file:
         json_file.write(json.dumps(json.loads(pspnet.to_json()), indent=2))
 
     print("save json model done...")
@@ -111,7 +111,11 @@ def main(args):
 if __name__ == "__main__":
     # command line argments
     parser = argparse.ArgumentParser(description="SegUNet LIP dataset")
-
+    parser.add_argument("--name",
+                        help="name of experiment",
+                        default='PSPNET'
+                        )
+    parser
     parser.add_argument("--dataset",
                         help="daase",
                         default='dir'
