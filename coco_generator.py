@@ -104,12 +104,12 @@ class Default_Generator():
     def __init__(self, image_dir, annotation_dir):
         self.dataset, self.anns, self.cats, self.imgs = dict(), dict(), dict(), dict()
 
-        self.annotation_file = annotation_dir
+        self.annotation_dir = annotation_dir
         self.image_dir = image_dir
         self.mask_list = []
         self.img_list = []
         print("loading dataset")
-        self.msk_dir = os.listdir(self.annotation_file)
+        self.msk_dir = os.listdir(self.annotation_dir)
 
         # mask_list=[[cv2.imread(os.path.join(annotation_dir,name)]) for name in mask_list]
 
@@ -149,6 +149,9 @@ class Default_Generator():
 
         while True:
             for name in self.msk_dir:
+                if ".DS_Store" in name:
+                    continue
+
                 mask = cv2.imread(os.path.join(self.annotation_dir, name), 0)
                 # print(annotation_dir, name)
                 mask[mask < 50] = 0
