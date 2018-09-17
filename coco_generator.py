@@ -109,25 +109,25 @@ class Default_Generator():
         self.mask_list = []
         self.img_list = []
         print("loading dataset")
-        msk_dir = os.listdir(self.annotation_file)
+        self.msk_dir = os.listdir(self.annotation_file)
 
         # mask_list=[[cv2.imread(os.path.join(annotation_dir,name)]) for name in mask_list]
 
-        for name in msk_dir:
-            if ".DS_Store" in name:
-                continue
-            image = cv2.imread(os.path.join(annotation_dir, name), 0)
-            # print(annotation_dir, name)
-            image[image < 50] = 0
-            # image[image > 200] = 0
-            image[image >= 50] = 1
-
-            # cv2.imshow("sds",image*255)
-            # cv2.waitKey(5000)
-            # print(image_dir, name)
-            self.mask_list.append(image)
-            image = cv2.imread(os.path.join(image_dir, name))
-            self.img_list.append(image)
+        # for name in msk_dir:
+        #     if ".DS_Store" in name:
+        #         continue
+        #     image = cv2.imread(os.path.join(annotation_dir, name), 0)
+        #     # print(annotation_dir, name)
+        #     image[image < 50] = 0
+        #     # image[image > 200] = 0
+        #     image[image >= 50] = 1
+        #
+        #     # cv2.imshow("sds",image*255)
+        #     # cv2.waitKey(5000)
+        #     # print(image_dir, name)
+        #     self.mask_list.append(image)
+        #     image = cv2.imread(os.path.join(image_dir, name))
+        #     self.img_list.append(image)
 
             # print("len",image.shape)
             # cv2.destroyAllWindows()
@@ -148,10 +148,16 @@ class Default_Generator():
         # print(self.image_ids)
 
         while True:
-            for i in range(len(self.mask_list)):
+            for name in self.msk_dir:
+                mask = cv2.imread(os.path.join(self.annotation_dir, name), 0)
+                # print(annotation_dir, name)
+                mask[mask < 50] = 0
+                # image[image > 200] = 0
+                mask[mask >= 50] = 1
 
-                img = self.img_list[i]
-                mask = self.mask_list[i]
+
+
+                img = cv2.imread(os.path.join(self.image_dir, name))
 
                 img = cv2.resize(img, (700, 700),interpolation=cv2.INTER_AREA)
                 mask = cv2.resize(mask, (700, 700),interpolation=cv2.INTER_LINEAR_EXACT)

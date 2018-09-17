@@ -115,7 +115,6 @@ if __name__ == "__main__":
                         help="name of experiment",
                         default='PSPNET'
                         )
-    parser
     parser.add_argument("--dataset",
                         help="daase",
                         default='dir'
